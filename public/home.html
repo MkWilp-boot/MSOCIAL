@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Main page</title>
+</head>
+<body>
+    <form method="POST">
+        <textarea rows="5" cols="10" name="AreaComment"></textarea>
+        <input type="submit" value="Post!">
+    </form>
+    {{range .posts}}
+        {{range .post}}
+            {{.}}
+        {{end}}
+    {{end}}
+</body>
+</html>
