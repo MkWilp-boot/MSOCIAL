@@ -3,9 +3,10 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
-	"text/template"
+	"reflect"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -13,13 +14,12 @@ import (
 type post struct {
 	Postdate          string
 	PostContent       string
-	PostEditedContent int8
+	PostEditedContent int
 	PostLikes         int
 }
 
 // Page refers to all data to be sent to the client
 type Page struct {
-	title string
 	posts []post
 }
 
@@ -70,8 +70,6 @@ func InsertPOSTContent(w http.ResponseWriter, r *http.Request) {
 
 // GETContent load all dynamic content to render in template
 func GETContent(w http.ResponseWriter, r *http.Request) {
-	var rec int
-
 	db, err := sql.Open("mysql", "joaoR:Joao_846515_AX@/MSOCIAL")
 	if err != nil {
 		ServerErrorTemplate, err := template.ParseFiles("public/internalServerError.html")
@@ -95,13 +93,9 @@ func GETContent(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 
-	db.QueryRow(`select 
-		count(*) as cnt 
-		FROM posts 
-	WHERE post_user_id = ? LIMIT 1`, 1).Scan(&rec)
-
 	// setting up posts to render main post's page
-	slicePost := make([]post, rec)
+
+	var slicePost []post
 	for rows.Next() {
 		var _post post
 		rows.Scan(&_post.Postdate,
@@ -111,16 +105,24 @@ func GETContent(w http.ResponseWriter, r *http.Request) {
 		slicePost = append(slicePost, _post)
 	}
 
-	newPage := Page{
-		title: "Main Page",
-		posts: slicePost,
+	for _, i := range slicePost {
+		v := reflect.ValueOf(i)
+
+		values := make([]interface{}, v.NumField())
+
+		for i := 0; i < v.NumField(); i++ {
+			values[i] = v.Field(i).Interface()
+		}
 	}
+
+	// Montagem de post
+	// postlist := mountPosts(slicePost)
 
 	template, err := template.ParseFiles("public/home.html")
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = template.Execute(w, newPage)
+	err = template.Execute(w, slicePost)
 	if err != nil {
 		log.Fatal(err)
 	}
