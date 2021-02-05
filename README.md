@@ -1,6 +1,5 @@
 # MSOCIAL
 
-This just an test, I'll update to another thing someday
-for now, this is just a test
+This just a test, I'll update it someday
 
 By: MkWilp-boot
