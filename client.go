@@ -6,7 +6,6 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"reflect"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -52,20 +51,10 @@ func InsertPOSTContent(w http.ResponseWriter, r *http.Request) {
 		VALUES(?, ?, ?, ?)`)
 
 	if err != nil {
-		log.Fatalf("Statement prepare failure, full stace track %s\n", err)
+		log.Fatalf("Statement prepare failure, full stacetrack %s\n", err)
 	}
 	stmt.Exec(r.Form.Get("AreaComment"), 1, 0, 0)
-
-	fmt.Fprintf(w, "<h1>Post sent: %s</h1>", r.Form.Get("AreaComment"))
-
-	template, err := template.ParseFiles("public/home.html")
-	if err != nil {
-		log.Fatal(err)
-	}
-	err = template.Execute(w, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	GETContent(w, r)
 }
 
 // GETContent load all dynamic content to render in template
@@ -82,9 +71,12 @@ func GETContent(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 	rows, err := db.Query(`SELECT 
-		post_date,
+		DATE_FORMAT(post_date, '%d/%m/%y') as date_content,
 		post_content,
-		post_edited_content,
+		CASE WHEN post_edited_content = 0 
+		THEN "Não editado"
+		ELSE "Conteúdo editado" 
+		END edicao,
 		post_likes
 	FROM posts WHERE post_user_id = ?`, 1)
 
@@ -104,19 +96,6 @@ func GETContent(w http.ResponseWriter, r *http.Request) {
 			&_post.PostLikes)
 		slicePost = append(slicePost, _post)
 	}
-
-	for _, i := range slicePost {
-		v := reflect.ValueOf(i)
-
-		values := make([]interface{}, v.NumField())
-
-		for i := 0; i < v.NumField(); i++ {
-			values[i] = v.Field(i).Interface()
-		}
-	}
-
-	// Montagem de post
-	// postlist := mountPosts(slicePost)
 
 	template, err := template.ParseFiles("public/home.html")
 	if err != nil {

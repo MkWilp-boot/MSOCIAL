@@ -1,22 +1,74 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html>
 <head>
-    <title>Main page</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        nav
+        {
+            background-color: rgb(22, 190, 148);
+        }
+        .container
+        {
+            text-align: center;
+        }
+        hr
+        {
+            opacity: 0.2;
+        }
+        .Prow
+        {
+            border: 1px solid gray
+        }
+    </style>
 </head>
+
 <body>
-    <form method="POST">
-        <textarea rows="5" cols="10" name="AreaComment"></textarea>
-        <input type="submit" value="Post!">
-    </form>
-    {{range $index := .}}
-        <div>
-            {{$index.Postdate}} &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;{{$index.PostEditedContent}}
-            <br>
-            {{$index.PostContent}}
-            <br>
-            {{$index.PostLikes}}
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo">Msocial</a>
+                <!--
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="sass.html">Sass</a></li>
+                    <li><a href="badges.html">Components</a></li>
+                    <li><a href="collapsible.html">JavaScript</a></li>
+                -->
+            </ul>
         </div>
-        <hr>
-    {{end}}
+    </nav>
+    <div class="container">
+        <h3>Posts</h3>
+        <div class="row">
+            <form method="POST" class="col s12">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea class="materialize-textarea" name="AreaComment" id="AreaComment"></textarea>
+                        <label for="AreaComment">Digite o post</label>
+                    </div>
+                </div>
+                <button class="btn waves-effect waves-light" type="submit" name="action">Enviar!
+                    <i class="material-icons right">send</i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <div class="container">
+        {{range $index := .}}
+            <div class="row" 
+                style="border: 2px solid gray; 
+                padding: 8px;
+                border-radius: 14px;">
+                <div class="row">
+                    {{$index.Postdate}} - {{$index.PostEditedContent}}
+                </div>
+                <textarea class="materialize-textarea">{{$index.PostContent}}</textarea>
+                Likes {{$index.PostLikes}}
+            </div>
+        {{end}}
+    </div>
 </body>
 </html>
