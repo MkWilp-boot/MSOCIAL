@@ -50,7 +50,7 @@ func GETContent(w http.ResponseWriter, r *http.Request) {
 		slicePost = append(slicePost, _post)
 	}
 
-	template, err := template.ParseFiles("public/home.html")
+	template, err := template.ParseFiles("public/views/home.html")
 	if err != nil {
 		log.Fatal(err)
 	}

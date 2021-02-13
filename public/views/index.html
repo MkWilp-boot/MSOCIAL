@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="/public/css/login.css" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+    <title>Login MSocial</title>
+    <style>
+        body
+        {
+            background-color: rgb(104, 104, 104);
+        }
+        h3
+        {
+            font-size: 3vw;
+            color: rgba(50,50,50,0.6);
+        }
+        #secLoginContent
+        {
+            margin: 5% auto;
+            border-radius: 15px;
+            box-shadow: 7px 7px rgba(0,0,0,0.6);
+            border: px solid black;
+            background-color: white;
+            padding: 50px 20px 50px 20px;
+            text-align: center;
+            max-width: 30%;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <div id="secLoginContent">
+            <div class="row">
+                <form class="col s12" method="POST" action="/login">
+                    <h3>Login to MSocial</h3>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">account_circle</i>
+                            <input id="username" name="username" type="text" class="validate">
+                            <label for="username">Usuário</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">vpn_key</i>
+                            <input id="password" name="password" type="password" class="validate">
+                            <label for="password">Senha</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                            <i class="material-icons right">send</i>
+                          </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
